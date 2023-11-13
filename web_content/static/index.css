@@ -1,0 +1,48 @@
+/*
+#AB9C9C - основной цвет текста
+#3B2024 - цвет фона
+Шрифт - Lora
+        background-color: rgba(196,196,196, 0.6); - чтобы настроить прозрачность
+*/
+@font-face {
+    font-family: Lora;
+    src: url("./fonts/Lora-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+.HomePage
+{
+    border-radius: 3px ;
+    width: 100%;
+    background: #3B2024;
+    background-position: center;
+    background-size: cover;
+    font-family: Lora;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 82px;
+    text-align: center;
+    color: #AB9C9C;
+    text-shadow: 0px 4px 51px rgba(0, 0, 0, 0.25);
+}
+.navbar
+{
+    position: sticky;
+    font-family: "LoraRegular";
+    width: 100%;
+    top: 0;
+    font-family: Lora;
+    color: #AB9C9C;
+    display: inline-flex;
+    justify-content: space-around;
+}
+.Potters
+{
+        font-size: 30px;
+}
+.linking
+{
+    background: rgba(123, 123, 123, 0.3);
+    color:#AB9C9C;
+    text-decoration:none;
+}

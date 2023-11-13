@@ -1,18 +1,29 @@
+
 <html>
     <head>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="../../static/index.css">
+            <link rel="icon" href="../../static/logo.png" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <meta charSet="utf-8" />
         <title>Django Girls blog</title>
     </head>
     <body>
+    <div class="HomePage">
+        <div class="navbar">
+        <div class="Potters">Potter`s Patrol</div>
+        <div><a class="linking" href="http://localhost:3000">Повернутись на головну</a></div>
+        </div>
+    </div>
         <div>
-            <h1><a href="">Django Girls Blog</a></h1>
+            <h1>Books</h1>
         </div>
         {% for post in posts %}
             <div>
-            <p>published: {{ post.published_date }}</p>
             <h1><a href="">{{ post.title }}</a> </h1>
             <p>{{ post.text|linebreaksbr }}</p>
+                        <p>published: {{ post.published_date }}</p>
             </div>
         {% endfor %}
-
     </body>
 </html>
