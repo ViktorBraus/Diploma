@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from .models import Post
 from django.utils import timezone
-
+from django.shortcuts import render
+import openai
 dialog_history = []
 # Create your views here.
 def web_content_list(request):
@@ -9,12 +9,8 @@ def web_content_list(request):
     return render(request, 'web_content/web_content_list.html', {'posts': posts})
 
 
-from django.shortcuts import render
-import openai
-
-
 def chat_bot(request):
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     ending = True
 
@@ -30,13 +26,14 @@ def chat_bot(request):
             max_tokens=150,
             n=1,
             stop=None,
-            temperature=0.7,
+            temperature=0.8,
         )
         # Отримання та виведення відповіді від GPT
         bot_reply = response.choices[0].text.strip()
-        dialog_history.append(f"Bot: {bot_reply}")
+        dialog_history.append(f"{bot_reply}")
 
         if user_input.lower() == "close":
+            dialog_history.clear()
             ending = False
 
     return render(request, 'web_content/chat_bot.html', {'dialog_history': dialog_history, 'ending': ending})

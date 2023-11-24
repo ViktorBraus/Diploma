@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!-- <div>
+            <h1>Books</h1>
+        </div>
+        {#% for post in posts %#}
+            <div>
+            <h1><a href="">{{ post.title }}</a> </h1>
+            <p>{{ post.text|linebreaksbr }}</p>
+                        <p>published: {{ post.published_date }}</p>
+            </div>
+        {#% endfor %#}
+-->
 {% load static %}
 <html>
     <head>
@@ -9,25 +20,22 @@
         <title>Potters Patrol</title>
     </head>
     <body>
-    <div class="HomePage">
+    <header>
+        <div class="HomePage">
         <div class="navbar">
         <div class="Potters">Potter`s Patrol</div>
         <div><a class="linking" href="http://localhost:3000">Повернутись на головну</a></div>
         </div>
-    </div>
-    <div>
-        <h1>Chat-bot Harry Pooter</h1>
-        <div><a href="chat_bot">Test Page</a></div>
-    </div>
-        <div>
-            <h1>Books</h1>
         </div>
-        {% for post in posts %}
-            <div>
-            <h1><a href="">{{ post.title }}</a> </h1>
-            <p>{{ post.text|linebreaksbr }}</p>
-                        <p>published: {{ post.published_date }}</p>
-            </div>
-        {% endfor %}
+    </header>
+        <main>
+        <div>
+        <h1 align="center">Chat-bot Harry Pooter</h1>
+        <div><a class="hyper" href="chat_bot">Start Chatting</a></div>
+        </div>
+        </main>
+    <footer>
+    {% include '../footer/footer.html' %}
+    </footer>
     </body>
 </html>
