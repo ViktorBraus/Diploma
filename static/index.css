@@ -10,10 +10,6 @@
     font-style: normal;
     font-weight: normal;
 }
-body
-{
-    background: #ad646f;
-}
 .HomePage
 {
     border-radius: 3px ;
@@ -35,7 +31,6 @@ body
     font-family: "LoraRegular";
     width: 100%;
     top: 0;
-    font-family: Lora;
     color: #AB9C9C;
     display: inline-flex;
     justify-content: space-around;
@@ -52,11 +47,53 @@ body
 }
 /* Загальний стиль для посилань */
 a {
-  color: #007bff; /* Колір тексту посилання */
+  color: #5d3036; /* Колір тексту посилання */
   text-decoration: none; /* Забираємо декорацію посилання (підкреслення) */
   transition: color 0.3s ease; /* Плавний перехід колір тексту при наведенні */
 }
 /* Стиль для наведення на посилання */
 a:hover {
-  color: #0056b3; /* Змінюємо колір тексту при наведенні */
+  color: #101d69; /* Змінюємо колір тексту при наведенні */
+}
+.hyper
+{
+    font-size: xx-large;
+    font-weight: bold;
+}
+.xz
+{
+    display:flex;
+    width: 50%;
+    flex-direction: row;
+    justify-content:center !important;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+body {
+    background: rgba(127, 73, 79, 0.68);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Забезпечуємо, щоб контент вміщався весь екран */
+    margin: 0;
+}
+header {
+    /* Стилі для верхньої частини сторінки */
+    background: rgba(127, 73, 79, 0.68);
+    padding: 10px;
+}
+main {
+    /* Стилі для основного контенту */
+    flex-grow: 1; /* Забезпечуємо розширення контенту на залишок висоти екрану */
+    padding: 20px;
+}
+footer {
+     /* Стилі для нижньої частини сторінки */
+    background: #291619;
+    display: block;
+    height: 100%;
+    margin-bottom:0px;
+    padding: 10px;
 }
