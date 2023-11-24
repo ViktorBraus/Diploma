@@ -10,7 +10,7 @@ def web_content_list(request):
 
 
 def chat_bot(request):
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     ending = True
 
