@@ -10,6 +10,10 @@
     font-style: normal;
     font-weight: normal;
 }
+body
+{
+    background: #ad646f;
+}
 .HomePage
 {
     border-radius: 3px ;
@@ -45,4 +49,14 @@
     background: rgba(123, 123, 123, 0.3);
     color:#AB9C9C;
     text-decoration:none;
+}
+/* Загальний стиль для посилань */
+.back {
+  color: #007bff; /* Колір тексту посилання */
+  text-decoration: none; /* Забираємо декорацію посилання (підкреслення) */
+  transition: color 0.3s ease; /* Плавний перехід колір тексту при наведенні */
+}
+/* Стиль для наведення на посилання */
+.back:hover {
+  color: #0056b3; /* Змінюємо колір тексту при наведенні */
 }
