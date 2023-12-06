@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +34,9 @@
         </form>
     {% endif %}
 <br/>
-<a class="back" href ='/'>return to main page</a>
+    <a class="back" href ='/'>return to main page</a><br/>
+<img class='word_cloud' width="400" src="{% static 'wordcloud_image.png' %}" alt="WordCloud">
+<textarea height="400">{{ textarea }}</textarea>
 </main>
 <footer>
     {% include '../footer/footer.html' %}

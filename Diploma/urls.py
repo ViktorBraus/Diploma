@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from web_content.views import chat_bot
+from web_content.views import wordcloud_view
 
 urlpatterns = [
     path(r'', include('web_content.urls')),
     path('admin/', admin.site.urls),
     path('chat_bot/', chat_bot, name='chat_bot'),
+    path('wordcloud/', wordcloud_view, name='wordcloud'),
 ]
