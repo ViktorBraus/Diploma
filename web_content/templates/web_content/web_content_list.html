@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<!-- <div>
-            <h1>Books</h1>
-        </div>
-        {#% for post in posts %#}
-            <div>
-            <h1><a href="">{{ post.title }}</a> </h1>
-            <p>{{ post.text|linebreaksbr }}</p>
-                        <p>published: {{ post.published_date }}</p>
-            </div>
-        {#% endfor %#}
--->
 {% load static %}
 <html>
     <head>
@@ -29,9 +18,26 @@
         </div>
     </header>
         <main>
-        <div>
-        <h1 align="center">Chat-bot Harry Potter</h1>
-            <button type="submit"><a class="hyper" href="chat_bot">Start Chatting</a></button>
+        <div class="block">
+        <h1 class="title" align="center">Chat-bot Harry Potter</h1>
+            <div class="homediv">
+                <div class="centring">
+                            <a class="hyper" href="ron"> Ron Weasley <br/>
+                                <img class='character_image' src="../static/ron.jpg"/>
+                            </a>
+                </div>
+                <div class="centring">
+                            <a class="hyper" href="harry"> Harry Potter <br/>
+                                <img class='character_image' src="../static/harry.webp"/>
+                            </a>
+                </div>
+                <div class="centring">
+                            <a class="hyper" href="hermione"> Hermione Granger <br/>
+                                <img class='character_image' src="../static/hermione.jpg"/>
+                            </a>
+                </div>
+                </div>
+            <br/>
         </div>
         </main>
     <footer>

@@ -21,23 +21,34 @@
 </header>
 <br/>
 <main>
-    {% for entry in dialog_history %}
-        <p>{{ entry }}</p>
-    {% endfor %}
-
+<table class="messageoff">
+    <tr>
+        <td>
+            <div class="chatting">
+                {% for entry in dialog_history %}
+                    <p>{{ entry }}</p>
+                {% endfor %}
+            </div>
+        </td>
+    </tr>
+    <tr>
+    <td>
     {% if ending %}
-        <form method="post" action="{% url 'chat_bot' %}">
+        <form method="post" action="{% url 'hermione' %}">
             {% csrf_token %}
-            <label for="user_input">You:</label>
-            <input type="text" name="user_input">
-            <button type="submit">Submit</button>
+            <input placeholder="Type your message" type="text" name="user_input"><br/>
+            <button class="buta" type="submit"><a class ='back'> Send </a></button>
+            <button class="buta btn btn-default"><a class="back" href ='/'>Return</a></button>
         </form>
     {% endif %}
+    </td>
+    </tr>
+</table>
+<p></p>
 <br/>
-    <a class="back" href ='/'>return to main page</a><br/>
-<img class='word_cloud' width="400" src="{% static 'wordcloud_image.png' %}" alt="WordCloud">
-<textarea height="400">{{ textarea }}</textarea>
+<!--<textarea height="400">{#  #}{textarea }}</textarea>-->
 </main>
+<!--<img class='word_cloud' width="400" src="{#  #}{ static 'wordcloud_image.png' %}}" alt="WordCloud">-->
 <footer>
     {% include '../footer/footer.html' %}
 </footer>

@@ -17,11 +17,11 @@
     background: #3B2024;
     background-position: center;
     background-size: cover;
-    font-family: Lora;
     font-style: normal;
     font-weight: normal;
     line-height: 82px;
     text-align: center;
+    font-family: Lora;
     color: #AB9C9C;
     text-shadow: 0px 4px 51px rgba(0, 0, 0, 0.25);
 }
@@ -47,13 +47,13 @@
 }
 /* Загальний стиль для посилань */
 a {
-  color: #5d3036; /* Колір тексту посилання */
+  color: #b77b83; /* Колір тексту посилання */
   text-decoration: none; /* Забираємо декорацію посилання (підкреслення) */
   transition: color 0.3s ease; /* Плавний перехід колір тексту при наведенні */
 }
 /* Стиль для наведення на посилання */
 a:hover {
-  color: #101d69; /* Змінюємо колір тексту при наведенні */
+  color: #3f1a1f; /* Змінюємо колір тексту при наведенні */
 }
 .hyper
 {
@@ -86,12 +86,90 @@ header {
 }
 main {
     /* Стилі для основного контенту */
+    background: #5e3338;
     flex-grow: 1; /* Забезпечуємо розширення контенту на залишок висоти екрану */
     padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.title
+{
+    font-family: Lora;
+    color: #AB9C9C;
+    text-shadow: 0px 4px 51px rgba(0, 0, 0, 0.25);
+}
+.homediv
+{
+    width: auto;
+    height: auto;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.centring
+{
+    text-align: center;
+}
+.block
+{
+    justify-content: center;
+    align-content: center;
+    width: 80%;
+}
+.character_image
+{
+    height: 400px;
+}
+.but
+{
+    background: none;
 }
 .word_cloud
 {
     width: 300px;
+}
+.messageoff
+{
+    display: flex;
+}
+.chatting
+{
+    font-size: 22px !important;
+    color: #5e3338 !important;
+    margin-left: auto;
+    margin-right: auto;
+    height: 510px;
+    width: 800px;
+    border-radius: 15px;
+    background: rgb(208, 162, 170, 0.87);
+    color: black !important;
+    overflow: auto;
+}
+input
+{
+    font-family: "LoraRegular";
+    font-size: 20px;
+    width: 776.8px;
+    padding: 10px 10px;
+    background: rgb(59, 32, 36, 0.8);
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-radius: 10px;
+    color: #DAD9D9;
+}
+.buta
+{
+    width: max-content !important;
+    margin-right: 2px;
+    margin-left: 1px;
+    background: rgb(59, 32, 36, 0.8);
+    border-radius: 10px;
+    color: #AB9C9C;
+    font-size: 30px;
 }
 footer {
      /* Стилі для нижньої частини сторінки */

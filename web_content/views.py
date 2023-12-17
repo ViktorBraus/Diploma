@@ -21,6 +21,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
+
 file_path = os.path.abspath("static/")
 nlp = spacy.load('en_core_web_sm')
 personal_stop_words = ['hagrid', 'ron', 'snape', 'hermione', 'petunia', 'vernon',
@@ -43,7 +44,8 @@ pd.set_option('display.max_colwidth', None)
 # df_dialogue[df_dialogue['Chapter ID'] <35 ]
 prompt_for_gpt = ''
 dialog_history = []
-
+gpt_history = []
+gpt_history.append(f"Type an answer, using this additional information about the text: \n")
 
 # -----------------------------------------------------------------
 def no_stop_words(text):
@@ -142,21 +144,23 @@ def generate_wordcloud(text):
 
 
 # -----------------------------------------------------------------
-def analyze():
+def analyze(name_of_character):
+    gpt_history = []
     character = df_characters.merge(df_dialogue, left_on='Character ID',
-                                right_on='Character ID',
-                                suffixes=('_left', '_right'))
-    character = character[character['Character Name'] == 'Harry Potter']  # Harry Potter , Ron Weasley , Hermione Granger
-    character_name = df_characters[df_characters['Character Name'] == 'Harry Potter']
+                                    right_on='Character ID',
+                                    suffixes=('_left', '_right'))
+    character = character[
+        character['Character Name'] == name_of_character]  # Harry Potter , Ron Weasley , Hermione Granger
+    character_name = df_characters[df_characters['Character Name'] == name_of_character]
     character_name = character_name['Character Name']
     character_name = ''.join(character_name)
     Harry = character
     Harry = Harry.drop(['Species', 'Character Name',
-                    'Gender', 'House', 'Patronus',
-                    'Wand (Wood)', 'Wand (Core)', 'Dialogue ID',
-                    'Chapter ID', 'Place ID'],
-                   axis='columns')
-# -----------------------------------------------------------------
+                        'Gender', 'House', 'Patronus',
+                        'Wand (Wood)', 'Wand (Core)', 'Dialogue ID',
+                        'Chapter ID', 'Place ID'],
+                       axis='columns')
+    # -----------------------------------------------------------------
     if not Harry['Dialogue'].empty:
         # Заміна екранованих апострофів
         original_text = np.array(Harry['Dialogue'].str.replace(r"\\'", " ' "))
@@ -166,8 +170,8 @@ def analyze():
         string = ' '.join(cleaned_text)
         # print(string)
     else:
-        print("Діалоги для Harry Potter відсутні.")
-# -----------------------------------------------------------------
+         print("Діалоги для Harry Potter відсутні.")
+    # -----------------------------------------------------------------
     sent_tokens = []
     cleaned_text_1 = []
     cleaned_text = []  # Текст, очищений від пунктуації та особливих закінчень
@@ -185,7 +189,7 @@ def analyze():
     Harry['Cleaned_Dialogue'] = cleaned_text
     Harry['Tokens_Dialogue'] = tokens
     Harry['noStopwords_Dialogue'] = stopwords_cleaned
-# -----------------------------------------------------------------
+    # -----------------------------------------------------------------
     for text in Harry['Dialogue']:
         text = sent_tokenize(text)
         sent_tokens += [' '.join(sublist) for sublist in text if sublist and any(sublist)]
@@ -193,105 +197,150 @@ def analyze():
         text = clean_text(text)
         cleaned_text_1.append(text)
     filtered_sentences = [' '.join(filter(lambda word: word not in stop_words, sentence.split())) for sentence in
-                      cleaned_text_1]
+                          cleaned_text_1]
     filtered_text_list = list(filter(bool, filtered_sentences))
     filtered_string = ''
     filtered_string = ' '.join(filtered_text_list)
-# -----------------------------------------------------------------
-# Завантаження моделі мови для англійської
+    # -----------------------------------------------------------------
+    # Завантаження моделі мови для англійської
     nlp = spacy.load("en_core_web_sm")
-# Текст для обробки
+    # Текст для обробки
     text = original_text_string
-# Обробка тексту SpaCy
+    # Обробка тексту SpaCy
     doc = nlp(text)
-# 1. Пошук вузлів-прийменників або сполучників з залежними вузлами
+    # 1. Пошук вузлів-прийменників або сполучників з залежними вузлами
     subclauses = {chunk.text for chunk in doc.noun_chunks if chunk.root.dep_ == "relcl"}
-# 2. Пошук вузлів особових займенників, що є коренем піддерева
+    # 2. Пошук вузлів особових займенників, що є коренем піддерева
     subordinate_clauses = {sent.text for sent in doc.sents if any(token.dep_ == "nsubj" and
-                                                              token.head.dep_ == "ROOT"
-                                                              for token in sent)}
-# 3. Пошук вузлів для сурядних речень
-# Створення множини складних речень у тексті
+                                                                  token.head.dep_ == "ROOT"
+                                                                  for token in sent)}
+    # 3. Пошук вузлів для сурядних речень
+    # Створення множини складних речень у тексті
     complex_sentences = {sent.text for sent in doc.sents if len(list(sent.root.children)) > 1}
-# Порахувати загальну кількість речень
+    # Порахувати загальну кількість речень
     total_sentences = len(list(doc.sents))
-# Вивести результати
-    print(f"\nЗагальна кількість речень: {total_sentences}")
-    print(f"Кількість складних речень: {len(subclauses.union(subordinate_clauses, complex_sentences))}")
-    print(
-    f"Відсоток складних речень від загальної кількості: {len(subclauses.union(subordinate_clauses, complex_sentences)) / total_sentences * 100}%")
+    # Вивести результати
+    #print(f"\nЗагальна кількість речень: {total_sentences}")
+    #print(f"Кількість складних речень: {len(subclauses.union(subordinate_clauses, complex_sentences))}")
+    #print(
+    #    f"Відсоток складних речень від загальної кількості: {len(subclauses.union(subordinate_clauses, complex_sentences)) / total_sentences * 100}%")
     average_sentence_length = textstat.avg_sentence_length(text)
-    print(f"Середня довжина речення: {average_sentence_length} слів")
+    #print(f"Середня довжина речення: {average_sentence_length} слів")
     word_count = textstat.lexicon_count(text)
-    print(f'Кількість слів в тексті: {word_count}')
+    #print(f'Кількість слів в тексті: {word_count}')
     average_word_length = textstat.avg_letter_per_word(text)
-    print(f"Середня довжина слова: {average_word_length} символів")
+    #print(f"Середня довжина слова: {average_word_length} символів")
 
-
-# -------------------------------------------
+    # -------------------------------------------
     string = clean(string)
     lemmatized_text = lemmatize_text(string)
-    print(lemmatized_text)
-# -------------------------------------------
+    #print(lemmatized_text)
+    # -------------------------------------------
     nested_sentences = []
     for sentence in Harry['Dialogue']:
         nested_sentences.append([sentence])
-    print(nested_sentences)
-# -------------------------------------------
-    prompt_for_gpt = f'Use this additional information to create an answer: \nYour name is {character_name}.\n'
+    #print(nested_sentences)
+    # -------------------------------------------
+    prompt_for_gpt = f'\nYour must answer as a {character_name} character. \n'
     string2 = clean_text(lemmatized_text)
     string2 = no_stop_words(string2)
+    generate_wordcloud(string2)
     most_common_words = find_most_common_words(string2, 10)
     pos_frequency = get_pos_frequency(original_text_string)
-    print("Частотність частин мови:", pos_frequency)
+    #print("Частотність частин мови:", pos_frequency)
     sentiment = get_sentiment(original_text_string)
-    print("----------------------------------------------")
-    print("Тональність тексту: ", sentiment)
-    print("----------------------------------------------")
-    print("Найпоширеніші слова: ")
+    #print("----------------------------------------------")
+    #print("Тональність тексту: ", sentiment)
+    #print("----------------------------------------------")
+    #print("Найпоширеніші слова: ")
     prompt_for_gpt += (
-    f"The percentage of complex sentences from the total number: {len(subclauses.union(subordinate_clauses, complex_sentences)) / total_sentences * 100}%\nAverage sentence length: {average_sentence_length} words\nNumber of words in the text: {word_count}\nAverage word length: {average_word_length} symbols\nPart of speech frequency: {pos_frequency}\nSentiment of the text: {sentiment}\n")
-    prompt_for_gpt += (f"Most frequent words of {character_name}: \n")
+        f"The percentage of complex sentences from the total number: {len(subclauses.union(subordinate_clauses, complex_sentences)) / total_sentences * 100}% \n Average sentence length: {average_sentence_length} words \n Number of words in the text: {word_count} \n Average word length: {average_word_length} symbols \n Part of speech frequency: {pos_frequency} \n Sentiment of the text: {sentiment} \n ")
+    prompt_for_gpt += (f"Most frequent words of {character_name}: \n ")
     for word, count in most_common_words:
-        prompt_for_gpt += (f"{word}: {count}\n")
+        prompt_for_gpt += (f"{word}: {count} \n ")
         print(f"{word}: {count}")
-    print("----------------------------------------------")
-# ---------------------------------------------
+    #print("----------------------------------------------")
+    # ---------------------------------------------
     full_text = ' '.join([sentence[0] for sentence in nested_sentences])
     full_text = clean_text(full_text)
-# full_text = no_stop_words(full_text)
+    # full_text = no_stop_words(full_text)
     for n in range(2, 6):
-        prompt_for_gpt += (f"Most common {n}-gram phrases of {character_name}: \n")
-        print(f"Найпоширеніші фрази з {n} грамами: ")
-    # get_most_common_phrases
+        prompt_for_gpt += (f"Most common {n}-gram phrases of {character_name}: \n ")
+        #print(f"Найпоширеніші фрази з {n} грамами: ")
+        # get_most_common_phrases
         most_common_phrases = get_most_common_phrases(full_text, n, top_k=5)
         for phrase, count in most_common_phrases:
-            print(f"{phrase}: {count} разів")
-            prompt_for_gpt += (f"{phrase}: {count}\n")
-        print("-----------------")
+            #print(f"{phrase}: {count} разів")
+            prompt_for_gpt += (f"{phrase}: {count} \n ")
+        #print("-----------------")
+    prompt_for_gpt += (f"Use most frequent words to create an answer on my question. \n ")
     return prompt_for_gpt
+
+
 def wordcloud_view(request):
     text = "Текст для генерації WordCloud"  # Замініть це на ваш текст або отримайте його з моделі
     generate_wordcloud(text)  # Викликайте вашу функцію для генерації WordCloud
-    return render(request, 'web_content/chat_bot.html')
+    return render(request, 'web_content/harry.html')
+
+
 # Create your views here.
 def web_content_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'web_content/web_content_list.html', {'posts': posts})
 
-prompt = f"{prompt_for_gpt}\n"
 
-def chat_bot(request):
-    prompt_for_gpt = analyze()
-    openai.api_key = "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"
+prompt = f"{prompt_for_gpt} \n "
+
+
+def harry(request):
+    prompt_for_gpt = ''
+    openai.api_key = "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"
     ending = True
-
     if request.method == 'POST':
+        print('lalala')
         user_input = request.POST['user_input']
-        dialog_history.append(f"Type an answer, using this extra information of desired answer: {user_input}")
-
+        dialog_history.append(f"{user_input}")
+        gpt_history.append(user_input)
         # Формування запиту до OpenAI на основі історії діалогу
-        prompt = "\n".join(dialog_history)
+        prompt = "\n".join(gpt_history)
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=150,
+            n=1,
+            stop=None,
+            temperature=0.7,
+        )
+        # Отримання та виведення відповіді від GPT
+        bot_reply = response.choices[0].text.strip()
+        dialog_history.append(f"{bot_reply}")
+
+        if user_input.lower() == "close":
+            dialog_history.clear()
+            ending = False
+    else:
+        gpt_history.clear()
+        dialog_history.clear()
+        prompt_for_gpt = analyze('Harry Potter')
+        # gpt_history.append(f"Type an answer, using this additional information about the text: \n")
+        gpt_history.append(prompt_for_gpt)
+        print(prompt_for_gpt)
+
+    return render(request, 'web_content/harry.html',
+                  {'textarea': prompt_for_gpt, 'dialog_history': dialog_history, 'ending': ending})
+
+
+def hermione(request):
+    prompt_for_gpt = ''
+    openai.api_key = "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"
+    ending = True
+    if request.method == 'POST':
+        print('lalala')
+        user_input = request.POST['user_input']
+        dialog_history.append(f"{user_input}")
+        gpt_history.append(user_input)
+        # Формування запиту до OpenAI на основі історії діалогу
+        prompt = "\n".join(gpt_history)
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
@@ -307,5 +356,50 @@ def chat_bot(request):
         if user_input.lower() == "close":
             dialog_history.clear()
             ending = False
+    else:
+        gpt_history.clear()
+        dialog_history.clear()
+        prompt_for_gpt = analyze('Hermione Granger')
+        # gpt_history.append(f"Type an answer, using this additional information about the text: \n")
+        gpt_history.append(prompt_for_gpt)
+        print(prompt_for_gpt)
 
-    return render(request, 'web_content/chat_bot.html', {'textarea': prompt_for_gpt, 'dialog_history': dialog_history, 'ending': ending})
+    return render(request, 'web_content/hermione.html',
+                  {'textarea': prompt_for_gpt, 'dialog_history': dialog_history, 'ending': ending})
+
+
+def ron(request):
+    prompt_for_gpt = ''
+    openai.api_key = "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"
+    ending = True
+    if request.method == 'POST':
+        user_input = request.POST['user_input']
+        dialog_history.append(f"{user_input}")
+        gpt_history.append(user_input)
+        # Формування запиту до OpenAI на основі історії діалогу
+        prompt = "\n".join(gpt_history)
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=150,
+            n=1,
+            stop=None,
+            temperature=0.9,
+        )
+        # Отримання та виведення відповіді від GPT
+        bot_reply = response.choices[0].text.strip()
+        dialog_history.append(f"{bot_reply}")
+
+        if user_input.lower() == "close":
+            dialog_history.clear()
+            ending = False
+    else:
+        gpt_history.clear()
+        dialog_history.clear()
+        prompt_for_gpt = analyze('Ron Weasley')
+        #gpt_history.append(f"Type an answer, using this additional information about the text: \n")
+        gpt_history.append(prompt_for_gpt)
+        print(prompt_for_gpt)
+
+    return render(request, 'web_content/ron.html',
+                  {'textarea': prompt_for_gpt, 'dialog_history': dialog_history, 'ending': ending})

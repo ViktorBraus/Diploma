@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="../../static/index.css">
+    <link rel="icon" href="../../static/logo.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Bot</title>
+</head>
+<body>
+<header>
+<div class="HomePage">
+        <div class="navbar">
+        <div class="Potters">Potter`s Patrol</div>
+        <div><a class="linking" href="http://localhost:3000">Повернутись на головну</a></div>
+        </div>
+    </div>
+</header>
+<br/>
+<main>
+<table class="messageoff">
+    <tr>
+        <td>
+            <div class="chatting">
+                {% for entry in dialog_history %}
+
+                    <p>{{ entry }}</p>
+                {% endfor %}
+            </div>
+        </td>
+    </tr>
+    <tr>
+    <td>
+    {% if ending %}
+        <form method="post" action="{% url 'harry' %}">
+            {% csrf_token %}
+            <input placeholder="Type your message" type="text" name="user_input"><br/>
+            <button class="buta" type="submit"><a class ='back'> Send </a></button>
+            <button class="buta btn btn-default"><a class="back" href ='/'>Return</a></button>
+        </form>
+    {% endif %}
+    </td>
+    </tr>
+</table>
+<p></p>
+<br/>
+<!--<textarea height="400">{#  #}{textarea }}</textarea>-->
+</main>
+<!--<img class='word_cloud' width="400" src="{#  #}{ static 'wordcloud_image.png' %}}" alt="WordCloud">-->
+<footer>
+    {% include '../footer/footer.html' %}
+</footer>
+</body>
+</html>

@@ -17,12 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from web_content.views import chat_bot
+from web_content.views import harry
+from web_content.views import hermione
+from web_content.views import ron
 from web_content.views import wordcloud_view
 
 urlpatterns = [
     path(r'', include('web_content.urls')),
     path('admin/', admin.site.urls),
-    path('chat_bot/', chat_bot, name='chat_bot'),
+    path('harry/', harry, name='harry'),
+    path('ron/', ron, name='ron'),
+    path('hermione/', hermione, name='hermione'),
     path('wordcloud/', wordcloud_view, name='wordcloud'),
 ]
